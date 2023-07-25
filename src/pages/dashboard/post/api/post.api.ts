@@ -1,7 +1,8 @@
 import { axiosInstance } from "../../../../util/axios.util";
+import { IAddPostForm } from "../interface/createPost.type";
 import { IPost } from "../interface/post.interface";
 
-export async function createPost(payload: FormData) {
+export async function createPost(payload: IAddPostForm) {
   const { data } = await axiosInstance({
     method: "POST",
     url: `/post`,

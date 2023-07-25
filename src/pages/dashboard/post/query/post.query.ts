@@ -43,5 +43,5 @@ export const useUploadPostQuery = ({
     },
   });
 
-  return { uploadPost: mutate, isUploadingPost: isLoading };
+  return { createPost: mutate, isCreatingPost: isLoading };
 };
