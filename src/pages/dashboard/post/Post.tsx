@@ -2,27 +2,27 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   Card,
   CardContent,
-  CardHeader,
   IconButton,
   TextField,
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import Highlighter from "react-highlight-words";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { tw } from "twind";
-import { css } from "twind/css";
+import { extractContentWithKeywords } from "../../../util/string.util";
 import { searchPosts } from "./api/post.api";
 import { IPost } from "./interface/post.interface";
 
 function Post() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState(
-    searchParams.get("search") ?? ""
-  );
+  const searchKey = searchParams.get("search") ?? "";
+  const searchKeyArr = searchKey.split(" ");
+  const [searchInput, setSearchInput] = useState(searchKey);
   const { ref, inView } = useInView();
 
   const {
@@ -42,7 +42,6 @@ function Post() {
       getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
     }
   );
-  // console.log(infiniteData);
 
   const filteredData = useMemo(() => {
     const data: IPost[] = [];
@@ -71,8 +70,6 @@ function Post() {
     }
   }, [inView]);
 
-  console.log(searchParams.get("search"));
-
   return (
     <div>
       <div className={tw(`flex justify-center items-center`)}>
@@ -93,29 +90,45 @@ function Post() {
 
       <div className={tw(`flex flex-col gap-6 mt-14`)}>
         {filteredData &&
-          filteredData.map((post) => (
-            <Card
-              key={post?._id}
-              onClick={() => navigate(`/post/${post.slug}`)}
-              className={tw(`cursor-pointer`)}
-            >
-              <CardHeader
-                title={post.title}
-                className={tw(
-                  css({ "& .MuiCardHeader-title": { fontSize: "1.15rem" } })
-                )}
-              />
-              <CardContent>
-                <Typography noWrap>{post.body}</Typography>
-                <Typography variant="subtitle2" mt={3} fontStyle="italic">
-                  Written by {post.author}
-                </Typography>
-                <Typography variant="subtitle2" fontStyle="italic">
-                  {dayjs(post.createdAt).format("MMM YY")}
-                </Typography>
-              </CardContent>{" "}
-            </Card>
-          ))}
+          filteredData.map((post) => {
+            const extractedBody = extractContentWithKeywords(
+              searchInput.split(" "),
+              post.body
+            );
+            return (
+              <Card
+                key={post?._id}
+                onClick={() => navigate(`/post/${post.slug}`)}
+                className={tw(`cursor-pointer`)}
+              >
+                <CardContent>
+                  <div className={tw(`mb-5`)}>
+                    <Highlighter
+                      searchWords={searchKeyArr}
+                      autoEscape={true}
+                      textToHighlight={post.title}
+                      className={tw(`text-xl font-medium`)}
+                    />
+                  </div>
+                  <div>
+                    <Highlighter
+                      searchWords={searchKeyArr}
+                      autoEscape={true}
+                      textToHighlight={`${extractedBody}...`}
+                      className={tw(`overflow-text`)}
+                    />
+                  </div>
+
+                  <Typography variant="subtitle2" mt={3} fontStyle="italic">
+                    Written by {post.author}
+                  </Typography>
+                  <Typography variant="subtitle2" fontStyle="italic">
+                    {dayjs(post.createdAt).format("MMM YY")}
+                  </Typography>
+                </CardContent>{" "}
+              </Card>
+            );
+          })}
       </div>
 
       <div className={tw(`p-5`)}>
