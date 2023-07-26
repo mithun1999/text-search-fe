@@ -10,7 +10,6 @@ import {
 
 export enum PostQueryEnum {
   GET_ALL_POST = "get-all-post",
-  GET_POST_BY_ID = "get-post-by-id",
   GET_POST_BY_SLUG = "get-post-by-slug",
 }
 
