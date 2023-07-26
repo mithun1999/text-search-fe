@@ -92,7 +92,7 @@ function Post() {
         {filteredData &&
           filteredData.map((post) => {
             const extractedBody = extractContentWithKeywords(
-              searchInput.split(" "),
+              searchKey.split(" "),
               post.body
             );
             return (
