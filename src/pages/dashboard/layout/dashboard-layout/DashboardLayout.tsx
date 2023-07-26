@@ -51,7 +51,7 @@ function DashboardLayout() {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            {activePath?.name ?? "Dashboard"}
+            {activePath?.name ?? "Post Details"}
           </Typography>
         </Toolbar>
       </AppBar>

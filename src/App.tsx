@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import DashboardLayout from "./pages/dashboard/layout/dashboard-layout/DashboardLayout";
 import Post from "./pages/dashboard/post/Post";
 import CreatePost from "./pages/dashboard/post/CreatePost";
+import ViewPost from "./pages/dashboard/post/ViewPost";
 
 function App() {
   const theme = createTheme();
@@ -33,6 +34,7 @@ function App() {
             <Route path="/" element={<DashboardLayout />}>
               <Route path="/" element={<Post />} />
               <Route path="/post/create" element={<CreatePost />} />
+              <Route path="/post/:slug" element={<ViewPost />} />
             </Route>
           </Routes>
         </QueryClientProvider>

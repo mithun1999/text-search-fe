@@ -2,11 +2,17 @@ import { UseFormReset } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { IAddPostForm } from "../interface/createPost.type";
-import { createPost, getAllPosts, getPostById } from "../api/post.api";
+import {
+  createPost,
+  getAllPosts,
+  getPostById,
+  getPostBySlug,
+} from "../api/post.api";
 
 export enum PostQueryEnum {
   GET_ALL_POST = "get-all-post",
   GET_POST_BY_ID = "get-post-by-id",
+  GET_POST_BY_SLUG = "get-post-by-slug",
 }
 
 export const useGetAllPostsQuery = () => {
@@ -22,6 +28,14 @@ export const useGetPostByIdQuery = (id: string) => {
   const { data, isLoading } = useQuery({
     queryKey: PostQueryEnum.GET_POST_BY_ID,
     queryFn: () => getPostById(id),
+  });
+  return { data, isLoading };
+};
+
+export const useGetPostBySlugQuery = (slug: string) => {
+  const { data, isLoading } = useQuery({
+    queryKey: PostQueryEnum.GET_POST_BY_SLUG,
+    queryFn: () => getPostBySlug(slug),
   });
   return { data, isLoading };
 };

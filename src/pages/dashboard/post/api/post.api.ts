@@ -26,3 +26,19 @@ export async function getPostById(id: string) {
   });
   return data as IPost;
 }
+
+export async function getPostBySlug(slug: string) {
+  const { data } = await axiosInstance({
+    method: "GET",
+    url: `/post/slug/${slug}`,
+  });
+  return data as IPost;
+}
+
+export async function searchPosts(key?: string, page?: string) {
+  const { data } = await axiosInstance({
+    method: "GET",
+    url: `/post/search?key=${key}&page=${page}&limit=10`,
+  });
+  return data;
+}
