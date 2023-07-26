@@ -11,14 +11,6 @@ export async function createPost(payload: IAddPostForm) {
   return data;
 }
 
-export async function getAllPosts() {
-  const { data } = await axiosInstance({
-    method: "GET",
-    url: `/post`,
-  });
-  return data as IPost[];
-}
-
 export async function getPostBySlug(slug: string) {
   const { data } = await axiosInstance({
     method: "GET",
