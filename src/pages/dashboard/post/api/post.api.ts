@@ -19,14 +19,6 @@ export async function getAllPosts() {
   return data as IPost[];
 }
 
-export async function getPostById(id: string) {
-  const { data } = await axiosInstance({
-    method: "GET",
-    url: `/post/${id}`,
-  });
-  return data as IPost;
-}
-
 export async function getPostBySlug(slug: string) {
   const { data } = await axiosInstance({
     method: "GET",

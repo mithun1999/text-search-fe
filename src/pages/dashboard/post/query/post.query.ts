@@ -5,7 +5,6 @@ import { IAddPostForm } from "../interface/createPost.type";
 import {
   createPost,
   getAllPosts,
-  getPostById,
   getPostBySlug,
 } from "../api/post.api";
 
@@ -20,14 +19,6 @@ export const useGetAllPostsQuery = () => {
     queryKey: PostQueryEnum.GET_ALL_POST,
     queryFn: getAllPosts,
     initialData: [],
-  });
-  return { data, isLoading };
-};
-
-export const useGetPostByIdQuery = (id: string) => {
-  const { data, isLoading } = useQuery({
-    queryKey: PostQueryEnum.GET_POST_BY_ID,
-    queryFn: () => getPostById(id),
   });
   return { data, isLoading };
 };
